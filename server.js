@@ -9,9 +9,13 @@ const io = require('socket.io')(server, {
 });
 
 app.use(cors());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/dist'));
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html')
+    res.sendFile(__dirname + '/dist/index.html')
+})
+
+app.get('/:room', (req, res) => {
+    res.sendFile(__dirname + '/dist/index.html')
 })
 
 io.on('connection', socket => {
@@ -25,4 +29,4 @@ io.on('connection', socket => {
 })
 
 
-server.listen(3000);
+server.listen(8085);

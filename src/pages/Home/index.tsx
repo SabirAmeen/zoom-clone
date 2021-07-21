@@ -15,7 +15,7 @@ const Home = (props: any) => {
 
     const socket = useMemo(() => {
         if (props.match.params.room) {
-            return window.io('localhost:3000')
+            return window.io('localhost:8085')
         }
     }, [props.match.params])
 
