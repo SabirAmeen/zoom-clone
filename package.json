@@ -4,6 +4,7 @@
   "description": "A zoom clone using webRTC and socket.io",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon server.js",
     "start-app": "webpack serve --mode development",
     "devStart": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
