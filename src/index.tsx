@@ -1,9 +1,12 @@
-function component() {
-    const element = document.createElement('div');
+import React from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import App from './App';
 
-    element.innerHTML = 'asdasdasd';
-
-    return element;
-  }
-
-  document.body.appendChild(component());
+render(
+    <Router>
+        <div>
+            <App />
+        </div>
+    </Router>
+, document.getElementById('app-root'))
