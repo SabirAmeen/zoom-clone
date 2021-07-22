@@ -33,7 +33,7 @@ const Home = (props: any) => {
                 });
                 setInit(true);
             })
-    }, [props.match.params])
+    }, [])
 
     // const myPeer = useMemo(() => {
     //     if (window.Peer) {
@@ -91,8 +91,8 @@ const Home = (props: any) => {
     if (redirectUrl) {
         return <Redirect to={redirectUrl} />
     }
-    else if (!init) {
-        return 'Loading..........';
+    else if (!myPeer.current) {
+        return <div>Loading..........</div>;
     }
     return (
         <div>
