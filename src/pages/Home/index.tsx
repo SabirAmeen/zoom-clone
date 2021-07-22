@@ -30,7 +30,8 @@ const Home = (props: any) => {
                 myPeer.current = new window.Peer(undefined, {
                     host: '/',
                     port: data.port,
-                })
+                });
+                setInit(true);
             })
     }, [props.match.params])
 
@@ -90,7 +91,9 @@ const Home = (props: any) => {
     if (redirectUrl) {
         return <Redirect to={redirectUrl} />
     }
-
+    else if (!init) {
+        return 'Loading..........';
+    }
     return (
         <div>
             <RecordInterface
