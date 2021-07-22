@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import {Redirect} from 'react-router-dom';
 import VideoInterface from './components/VideoInterface';
 import RecordInterface from './components/RecordInterface';
@@ -12,6 +12,8 @@ const Home = (props: any) => {
     const [redirectUrl, setRedirectUrl] = useState('');
     const [streamList, setStreamList] = useState([]);
     const [peerList, setPeerList] = useState({});
+    const myPeer = useRef(null);
+    const [init, setInit] = useState(false);
 
     const socket = useMemo(() => {
         if (props.match.params.room) {
@@ -19,35 +21,48 @@ const Home = (props: any) => {
         }
     }, [props.match.params])
 
-    const myPeer = useMemo(() => {
-        if (window.Peer) {
-            return new window.Peer(undefined, {
-                host: '/',
-                port: '3001',
+    useEffect(() => {
+        fetch(`${window.location.origin}/getPort`)
+            .then(res => {
+                return res.json()
             })
-        }
-    }, [])
+            .then((data: any) => {
+                myPeer.current = new window.Peer(undefined, {
+                    host: '/',
+                    port: data.port,
+                })
+            })
+    }, [props.match.params])
+
+    // const myPeer = useMemo(() => {
+    //     if (window.Peer) {
+    //         return new window.Peer(undefined, {
+    //             host: '/',
+    //             port: '3001',
+    //         })
+    //     }
+    // }, [])
 
     useEffect(() => {
         if (!props.match.params.room) {
             setRedirectUrl(`/${uuidV4()}`);
         } else {
             setRedirectUrl('');
-            if (socket && myPeer) {
+            if (socket && myPeer.current) {
                 socket.on('user-disconnect', (userId: string) => {
                     // if (peerList[userId]) {
                     //     peerList[userId].close();
                     // }
                 })
-                myPeer.on('open', (id: any) => {
+                myPeer.current.on('open', (id: any) => {
                     socket.emit('join-room', props.match.params.room, id);
                 })
             }
         }
-    }, [props.match.params]);
+    }, [props.match.params, init]);
 
     const connectUser = (userId: any, stream: any) => {
-        const call = myPeer.call(userId, stream);
+        const call = myPeer.current.call(userId, stream);
         call.on('stream', (userVidStream: any) => {
             setStreamList([...streamList, userVidStream]);
         });
@@ -64,7 +79,7 @@ const Home = (props: any) => {
         socket.on('user-connected', (userId: any) => {
             connectUser(userId, stream);
         })
-        myPeer.on('call', (call: any) => {
+        myPeer.current.on('call', (call: any) => {
             call.answer(stream);
             call.on('stream', (userVidStream: any) => {
                 setStreamList([...streamList, userVidStream]);

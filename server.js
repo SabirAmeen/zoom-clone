@@ -15,6 +15,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/dist/index.html')
 })
 
+app.get('/getPort', (req, res) => {
+    res.status(200).send({ port: process.env.PORT || 3001 });
+})
+
 app.get('/:room', (req, res) => {
     res.sendFile(__dirname + '/dist/index.html')
 })
@@ -31,5 +35,5 @@ io.on('connection', socket => {
 
 
 server.listen(process.env.PORT || 8085);
-exec('peerjs --port 3001', {stdio:[0,1,2]});
+exec('peerjs --port '+process.env.PORT || 3001, {stdio:[0,1,2]});
 
