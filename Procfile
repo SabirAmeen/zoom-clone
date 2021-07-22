@@ -1,1 +1,2 @@
-web: npm install -g peer && peerjs --port 3001 && node server.js
+web: npm install -g peer && node server.js
+worker: peerjs --port 3001
