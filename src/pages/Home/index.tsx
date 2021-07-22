@@ -35,15 +35,6 @@ const Home = (props: any) => {
             })
     }, [])
 
-    // const myPeer = useMemo(() => {
-    //     if (window.Peer) {
-    //         return new window.Peer(undefined, {
-    //             host: '/',
-    //             port: '3001',
-    //         })
-    //     }
-    // }, [])
-
     useEffect(() => {
         if (!props.match.params.room) {
             setRedirectUrl(`/${uuidV4()}`);
