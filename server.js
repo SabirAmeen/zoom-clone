@@ -31,5 +31,5 @@ io.on('connection', socket => {
 
 
 server.listen(process.env.PORT || 8085);
-console.log('listening on', process.env.PORT)
-// execSync('peerjs --port 3001', {stdio:[0,1,2]});
+exec('peerjs --port 3001', {stdio:[0,1,2]});
+
