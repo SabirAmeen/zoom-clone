@@ -30,6 +30,7 @@ const Home = (props: any) => {
                 myPeer.current = new window.Peer(undefined, {
                     host: '/',
                     port: data.port,
+                    path: '/peerjs/myapp'
                 });
                 setInit(true);
             })

@@ -1,7 +1,7 @@
 const express = require('express');
-const { exec, execSync } = require('child_process');
 var cors = require('cors')
 const app = express();
+const { ExpressPeerServer } = require('peer');
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/getPort', (req, res) => {
-    res.status(200).send({ port: process.env.PORT || 3001 });
+    res.status(200).send({ port: process.env.PORT || 8085 });
 })
 
 app.get('/:room', (req, res) => {
@@ -33,7 +33,10 @@ io.on('connection', socket => {
     })
 })
 
-execSync('peerjs --port '+process.env.PORT || 3001, {stdio:[0,1,2]});
-
 server.listen(process.env.PORT || 8085);
 
+const peerServer = ExpressPeerServer(server, {
+    path: '/myapp'
+  });
+  
+app.use('/peerjs', peerServer);
