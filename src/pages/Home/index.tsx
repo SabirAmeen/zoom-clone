@@ -22,14 +22,14 @@ const Home = (props: any) => {
     }, [props.match.params])
 
     useEffect(() => {
-        fetch(`${window.location.origin}/getPort`)
+        fetch('https://zoom-peer.herokuapp.com/getPort')
             .then(res => {
                 return res.json()
             })
             .then((data: any) => {
                 myPeer.current = new window.Peer(undefined, {
-                    host: '/',
-                    port: data.port,
+                    host: 'zoom-peer.herokuapp.com',
+                    port: 80,
                     path: '/peerjs/myapp'
                 });
                 setInit(true);

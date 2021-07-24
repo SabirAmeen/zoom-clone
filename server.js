@@ -1,7 +1,6 @@
 const express = require('express');
 var cors = require('cors')
 const app = express();
-const { ExpressPeerServer } = require('peer');
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -34,9 +33,3 @@ io.on('connection', socket => {
 })
 
 server.listen(process.env.PORT || 8085);
-
-const peerServer = ExpressPeerServer(server, {
-    path: '/myapp'
-  });
-  
-app.use('/peerjs', peerServer);
