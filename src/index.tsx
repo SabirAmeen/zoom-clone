@@ -5,8 +5,6 @@ import App from './App';
 
 render(
     <Router>
-        <div>
-            <App />
-        </div>
+        <App />
     </Router>
 , document.getElementById('app-root'))

@@ -5,12 +5,10 @@ import Home from './pages/Home';
 const App = () => {
     
     return (
-        <div>
-            <Switch>
-                <Route exact path='/' component={Home} />
-                <Route exact path='/:room' component={Home} />
-            </Switch>
-        </div>
+        <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/:room' component={Home} />
+        </Switch>
     )
 }
 
