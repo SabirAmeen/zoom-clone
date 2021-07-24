@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import VideoInterface from './components/VideoInterface';
 import RecordInterface from './components/RecordInterface';
 import {v4 as uuidV4} from 'uuid';
+import { Wrapper } from './styled';
 
 declare global {
     interface Window { io: any; Peer: any; }
@@ -87,19 +88,21 @@ const Home = (props: any) => {
         return <div>Loading..........</div>;
     }
     return (
-        <div>
+        <Wrapper>
             <RecordInterface
                 muted
                 onStreamStart={onStreamStart}
+                className='record-interface'
             />
             {
                 streamList.map((stream: any) => (
                     <VideoInterface
+                        className='video-interface'
                         stream={stream}
                     />
                 ))
             }
-        </div>
+        </Wrapper>
     )
 }
 
