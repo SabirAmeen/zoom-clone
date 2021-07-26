@@ -92,7 +92,7 @@ const Home = (props: any) => {
             <RecordInterface
                 muted
                 onStreamStart={onStreamStart}
-                className='record-interface'
+                className={streamList.length ? 'record-interface' : 'video-interface'}
             />
             {
                 streamList.map((stream: any) => (
@@ -101,6 +101,10 @@ const Home = (props: any) => {
                         stream={stream}
                     />
                 ))
+            }
+            {
+                streamList.length > 0 &&
+                    <img className='call-end' src='./assets/end-call.svg' />
             }
         </Wrapper>
     )

@@ -1,1 +1,1 @@
-web: npm install -g peer && node server.js
+web: node server.js
