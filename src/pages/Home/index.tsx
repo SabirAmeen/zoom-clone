@@ -9,10 +9,12 @@ declare global {
     interface Window { io: any; Peer: any; }
 }
 
+type peerEle = { [peer: string]: Object }
+
 const Home = (props: any) => {
     const [redirectUrl, setRedirectUrl] = useState('');
     const [streamList, setStreamList] = useState([]);
-    const [peerList, setPeerList] = useState({});
+    const [peerList, setPeerList] = useState<peerEle>({});
     const myPeer = useRef(null);
     const [init, setInit] = useState(false);
 
@@ -44,9 +46,9 @@ const Home = (props: any) => {
             setRedirectUrl('');
             if (socket && myPeer.current) {
                 socket.on('user-disconnect', (userId: string) => {
-                    // if (peerList[userId]) {
-                    //     peerList[userId].close();
-                    // }
+                    if (peerList[userId]) {
+                        (peerList[userId] as any).close();
+                    }
                 })
                 myPeer.current.on('open', (id: any) => {
                     socket.emit('join-room', props.match.params.room, id);
@@ -81,6 +83,10 @@ const Home = (props: any) => {
         })
     }
 
+    const onPeerClose = () => {
+        Object.keys(peerList).forEach((peerKey: string) => (peerList[peerKey] as any).close());
+    }
+
     if (redirectUrl) {
         return <Redirect to={redirectUrl} />
     }
@@ -104,7 +110,7 @@ const Home = (props: any) => {
             }
             {
                 streamList.length > 0 &&
-                    <img className='call-end' src='./assets/end-call.svg' />
+                    <img className='call-end' onClick={onPeerClose} src='./assets/end-call.svg' />
             }
         </Wrapper>
     )

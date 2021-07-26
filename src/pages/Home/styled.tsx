@@ -24,5 +24,6 @@ export const Wrapper = styled.section`
         left: calc(50% - 25px);
         width: 50px;
         bottom: 33px;
+        cursor: pointer;
     }
 `;
