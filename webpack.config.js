@@ -19,6 +19,7 @@ module.exports = {
         compress: true, // enable gzip compression
         historyApiFallback: true, // true for index.html upon 404, object for multiple paths,
         port: 8000,
+        writeToDisk: true,
         hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
       },
     resolve: {
@@ -36,6 +37,26 @@ module.exports = {
         }]
       })
     ],
+    optimization: {
+      minimize: true,
+      minimizer: [
+        (compiler) => {
+            const TerserPlugin = require('terser-webpack-plugin');
+            new TerserPlugin({
+              terserOptions: {
+                toplevel: true,
+                compress: {
+                  drop_console: false,
+                  drop_debugger: true,
+                },
+                output: {
+                  comments: false,
+                },          
+              }
+            }).apply(compiler);
+        },
+      ],
+    },
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),

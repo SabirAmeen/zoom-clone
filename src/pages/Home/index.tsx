@@ -32,7 +32,7 @@ const Home = (props: any) => {
             .then((data: any) => {
                 myPeer.current = new window.Peer(undefined, {
                     host: 'zoom-peer.herokuapp.com',
-                    port: 443,
+                    port: 80,
                     path: '/peerjs/myapp'
                 });
                 setInit(true);
@@ -46,6 +46,7 @@ const Home = (props: any) => {
             setRedirectUrl('');
             if (socket && myPeer.current) {
                 socket.on('user-disconnect', (userId: string) => {
+                    setStreamList([]);
                     if (peerList[userId]) {
                         (peerList[userId] as any).close();
                     }
@@ -63,7 +64,7 @@ const Home = (props: any) => {
             setStreamList([...streamList, userVidStream]);
         });
         call.on('close', () => {
-            setStreamList(streamList.filter(oldStream => oldStream!==stream))
+            setStreamList([]);
         });
         setPeerList({
             ...peerList,
@@ -77,6 +78,10 @@ const Home = (props: any) => {
         })
         myPeer.current.on('call', (call: any) => {
             call.answer(stream);
+            setPeerList({
+                ...peerList,
+                [call.peer]: call,
+            })
             call.on('stream', (userVidStream: any) => {
                 setStreamList([...streamList, userVidStream]);
             })
@@ -84,7 +89,11 @@ const Home = (props: any) => {
     }
 
     const onPeerClose = () => {
-        Object.keys(peerList).forEach((peerKey: string) => (peerList[peerKey] as any).close());
+        socket.emit('manual-disconnect');
+        setStreamList([]);
+        Object.keys(peerList).forEach((peerKey: string) => {
+            return (peerList[peerKey] as any).close()
+        });
     }
 
     if (redirectUrl) {
