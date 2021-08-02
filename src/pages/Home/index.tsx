@@ -32,7 +32,7 @@ const Home = (props: any) => {
             .then((data: any) => {
                 myPeer.current = new window.Peer(undefined, {
                     host: 'zoom-peer.herokuapp.com',
-                    port: 80,
+                    port: 443,
                     path: '/peerjs/myapp'
                 });
                 setInit(true);
